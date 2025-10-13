@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Award, Clock, Star, Sparkles } from "lucide-react";
-import { doctors } from "../data/hospitalData";
+import { api } from "../services/api";
+import { Doctor } from "../types/api";
 
 interface DoctorsProps {
   onBookAppointment?: () => void;
 }
 
 const Doctors: React.FC<DoctorsProps> = ({ onBookAppointment }) => {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadDoctors = async () => {
+      try {
+        const doctorsData = await api.doctors.getAll();
+        setDoctors(doctorsData);
+      } catch (err) {
+        console.error('Error loading doctors:', err);
+        setError('Failed to load doctors');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDoctors();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="relative py-20 bg-gradient-to-br from-white via-medical-50/30 to-accent-50/30">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-medical-600">Loading doctors...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="relative py-20 bg-gradient-to-br from-white via-medical-50/30 to-accent-50/30">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-red-600">{error}</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="doctors"
@@ -44,7 +85,7 @@ const Doctors: React.FC<DoctorsProps> = ({ onBookAppointment }) => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 animate-fadeInUp animation-delay-600">
           {doctors.map((doctor) => (
             <div
-              key={doctor.id}
+              key={doctor._id}
               className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-medical-500/20 transition-all duration-500 overflow-hidden border border-medical-100/50 transform hover:scale-105 hover:-translate-y-2"
             >
               <div className="relative">

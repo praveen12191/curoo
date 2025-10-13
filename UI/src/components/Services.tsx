@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Heart,
   Baby,
@@ -10,7 +9,8 @@ import {
   Sparkles,
   Star,
 } from "lucide-react";
-import { services } from "../data/hospitalData";
+import { api } from "../services/api";
+import { Service } from "../types/api";
 
 const iconMap = {
   Heart,
@@ -22,7 +22,26 @@ const iconMap = {
 };
 
 const Services: React.FC = () => {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const servicesData = await api.services.getAll();
+        setServices(servicesData);
+      } catch (err) {
+        console.error('Error loading services:', err);
+        setError('Failed to load services');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
 
 
   const goToSlide = (index: number) => {
@@ -36,7 +55,7 @@ const Services: React.FC = () => {
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [services.length]);
 
   return (
     <section
@@ -50,6 +69,21 @@ const Services: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg text-medical-600">Loading services...</div>
+          </div>
+        )}
+
+        {error && (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg text-red-600">{error}</div>
+          </div>
+        )}
+
+        {!loading && !error && (
+          <>
+        
         {/* Section Header */}
         <div className="text-center mb-16 animate-fadeInUp">
           <div className="flex items-center justify-center space-x-2 mb-4">
@@ -80,7 +114,7 @@ const Services: React.FC = () => {
                   iconMap[service.icon as keyof typeof iconMap];
                 return (
                   <div
-                    key={service.id}
+                    key={service._id}
                     className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
                       index === currentSlide
                         ? "translate-x-0 opacity-100"
@@ -213,6 +247,8 @@ const Services: React.FC = () => {
             </div>
           </div>
         </div>
+          </>
+        )}
       </div>
     </section>
   );
