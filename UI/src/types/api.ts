@@ -91,7 +91,7 @@ export interface Appointment {
   preferred_date: string;
   preferred_time: string;
   message?: string;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  status: "pending" | "confirmed" | "cancelled" | "completed";
   created_at?: string;
   updated_at?: string;
 }
@@ -109,7 +109,7 @@ export interface AppointmentCreate {
 }
 
 export interface AppointmentUpdate {
-  status?: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  status?: "pending" | "confirmed" | "cancelled" | "completed";
   doctor_id?: string;
   preferred_date?: string;
   preferred_time?: string;

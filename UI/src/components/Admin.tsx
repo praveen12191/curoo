@@ -93,8 +93,8 @@ const Admin: React.FC = () => {
       setServices(servicesData);
       setAppointments(appointmentsData);
     } catch (err) {
-      setError('Failed to load data');
-      console.error('Error loading data:', err);
+      setError("Failed to load data");
+      console.error("Error loading data:", err);
     } finally {
       setLoading(false);
     }
@@ -158,13 +158,16 @@ const Admin: React.FC = () => {
         });
         setShowAddDoctorModal(false);
       } catch (err) {
-        console.error('Error creating doctor:', err);
-        setError('Failed to create doctor');
+        console.error("Error creating doctor:", err);
+        setError("Failed to create doctor");
       }
     }
   };
 
-  const handleEditDoctor = async (id: string, updatedDoctor: Partial<Doctor>) => {
+  const handleEditDoctor = async (
+    id: string,
+    updatedDoctor: Partial<Doctor>
+  ) => {
     try {
       await api.doctors.update(id, updatedDoctor);
       setDoctors(
@@ -173,8 +176,8 @@ const Admin: React.FC = () => {
         )
       );
     } catch (err) {
-      console.error('Error updating doctor:', err);
-      setError('Failed to update doctor');
+      console.error("Error updating doctor:", err);
+      setError("Failed to update doctor");
     }
   };
 
@@ -184,8 +187,8 @@ const Admin: React.FC = () => {
         await api.doctors.delete(id);
         setDoctors(doctors.filter((doctor) => doctor._id !== id));
       } catch (err) {
-        console.error('Error deleting doctor:', err);
-        setError('Failed to delete doctor');
+        console.error("Error deleting doctor:", err);
+        setError("Failed to delete doctor");
       }
     }
   };
@@ -203,13 +206,16 @@ const Admin: React.FC = () => {
         });
         setShowAddServiceModal(false);
       } catch (err) {
-        console.error('Error creating service:', err);
-        setError('Failed to create service');
+        console.error("Error creating service:", err);
+        setError("Failed to create service");
       }
     }
   };
 
-  const handleEditService = async (id: string, updatedService: Partial<Service>) => {
+  const handleEditService = async (
+    id: string,
+    updatedService: Partial<Service>
+  ) => {
     try {
       await api.services.update(id, updatedService);
       setServices(
@@ -218,8 +224,8 @@ const Admin: React.FC = () => {
         )
       );
     } catch (err) {
-      console.error('Error updating service:', err);
-      setError('Failed to update service');
+      console.error("Error updating service:", err);
+      setError("Failed to update service");
     }
   };
 
@@ -229,8 +235,8 @@ const Admin: React.FC = () => {
         await api.services.delete(id);
         setServices(services.filter((service) => service._id !== id));
       } catch (err) {
-        console.error('Error deleting service:', err);
-        setError('Failed to delete service');
+        console.error("Error deleting service:", err);
+        setError("Failed to delete service");
       }
     }
   };
@@ -238,17 +244,26 @@ const Admin: React.FC = () => {
   // Appointment operations
   const handleUpdateAppointmentStatus = async (id: string, status: string) => {
     try {
-      await api.appointments.update(id, { status: status as "pending" | "confirmed" | "cancelled" | "completed" });
+      await api.appointments.update(id, {
+        status: status as "pending" | "confirmed" | "cancelled" | "completed",
+      });
       setAppointments(
         appointments.map((appointment) =>
           appointment._id === id
-            ? { ...appointment, status: status as "pending" | "confirmed" | "cancelled" | "completed" }
+            ? {
+                ...appointment,
+                status: status as
+                  | "pending"
+                  | "confirmed"
+                  | "cancelled"
+                  | "completed",
+              }
             : appointment
         )
       );
     } catch (err) {
-      console.error('Error updating appointment:', err);
-      setError('Failed to update appointment status');
+      console.error("Error updating appointment:", err);
+      setError("Failed to update appointment status");
     }
   };
 
@@ -260,8 +275,8 @@ const Admin: React.FC = () => {
           appointments.filter((appointment) => appointment._id !== id)
         );
       } catch (err) {
-        console.error('Error deleting appointment:', err);
-        setError('Failed to delete appointment');
+        console.error("Error deleting appointment:", err);
+        setError("Failed to delete appointment");
       }
     }
   };
@@ -557,7 +572,9 @@ const Admin: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => handleDeleteAppointment(appointment._id!)}
+                        onClick={() =>
+                          handleDeleteAppointment(appointment._id!)
+                        }
                         className="text-red-600 hover:text-red-700 p-1 hover:bg-red-50 rounded"
                       >
                         <Trash2 size={16} />
@@ -623,7 +640,9 @@ const Admin: React.FC = () => {
                     type="text"
                     value={doctor.specialty}
                     onChange={(e) =>
-                      handleEditDoctor(doctor._id!, { specialty: e.target.value })
+                      handleEditDoctor(doctor._id!, {
+                        specialty: e.target.value,
+                      })
                     }
                     className="w-full p-2 border border-gray-300 rounded-lg"
                     placeholder="Specialty"

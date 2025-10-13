@@ -18,8 +18,8 @@ const Doctors: React.FC<DoctorsProps> = ({ onBookAppointment }) => {
         const doctorsData = await api.doctors.getAll();
         setDoctors(doctorsData);
       } catch (err) {
-        console.error('Error loading doctors:', err);
-        setError('Failed to load doctors');
+        console.error("Error loading doctors:", err);
+        setError("Failed to load doctors");
       } finally {
         setLoading(false);
       }
