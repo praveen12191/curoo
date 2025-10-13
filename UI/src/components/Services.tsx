@@ -9,6 +9,8 @@ import {
   ScanLine,
   Sparkles,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { services } from "../data/hospitalData";
 
@@ -24,9 +26,12 @@ const iconMap = {
 const Services: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const goToPrevious = () => {
+    setCurrentSlide((prev) => (prev === 0 ? services.length - 1 : prev - 1));
+  };
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
+  const goToNext = () => {
+    setCurrentSlide((prev) => (prev + 1) % services.length);
   };
 
   // Auto-play functionality
@@ -120,23 +125,46 @@ const Services: React.FC = () => {
               })}
             </div>
 
-            {/* Navigation Dots */}
+            {/* Left Navigation Button */}
+            <button
+              onClick={goToPrevious}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 flex items-center justify-center transition-all duration-300 hover:bg-white hover:shadow-xl hover:scale-110 group"
+              aria-label="Previous service"
+            >
+              <ChevronLeft
+                size={24}
+                className="text-medical-600 group-hover:text-medical-700 transition-colors duration-300"
+              />
+            </button>
+
+            {/* Right Navigation Button */}
+            <button
+              onClick={goToNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 flex items-center justify-center transition-all duration-300 hover:bg-white hover:shadow-xl hover:scale-110 group"
+              aria-label="Next service"
+            >
+              <ChevronRight
+                size={24}
+                className="text-medical-600 group-hover:text-medical-700 transition-colors duration-300"
+              />
+            </button>
+
+            {/* Non-clickable Navigation Dots (Visual Indicator Only) */}
             <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-3">
               {services.map((_, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-4 h-4 rounded-full transition-all duration-300 transform hover:scale-125 ${
+                  className={`w-4 h-4 rounded-full transition-all duration-300 ${
                     index === currentSlide
                       ? "bg-gradient-to-r from-medical-600 to-accent-500 shadow-lg scale-125 w-6"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      : "bg-gray-300"
                   }`}
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-label={`Service ${index + 1} indicator`}
                 />
               ))}
             </div>
 
-            {/* Auto-play indicator */} 
+            {/* Auto-play indicator */}
             <div className="absolute top-6 right-6">
               <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>

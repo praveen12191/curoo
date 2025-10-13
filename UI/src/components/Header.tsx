@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Globe } from "lucide-react";
 import logoImage from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,15 @@ const Header: React.FC<HeaderProps> = ({ onBookAppointment }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isServicesHovered, setIsServicesHovered] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState("English");
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+
+  const languages = [
+    { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "tet", name: "Tetum", flag: "🇹🇱" },
+    { code: "id", name: "Indonesian", flag: "🇮🇩" },
+    { code: "es", name: "Spanish", flag: "🇪🇸" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,8 +31,28 @@ const Header: React.FC<HeaderProps> = ({ onBookAppointment }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (isLanguageDropdownOpen && !target.closest(".language-selector")) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isLanguageDropdownOpen]);
+
   const callAction = () => {
     navigate("/admin");
+  };
+
+  const handleLanguageChange = (languageName: string) => {
+    setCurrentLanguage(languageName);
+    setIsLanguageDropdownOpen(false);
+    // Here you can add logic to actually change the language content
+    console.log(`Language changed to: ${languageName}`);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -209,6 +238,52 @@ const Header: React.FC<HeaderProps> = ({ onBookAppointment }) => {
                 Admin
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-medical-600 to-accent-500 group-hover:w-full transition-all duration-300"></span>
               </button>
+
+              {/* Language Selector */}
+              <div className="relative language-selector">
+                <button
+                  onClick={() =>
+                    setIsLanguageDropdownOpen(!isLanguageDropdownOpen)
+                  }
+                  className="flex items-center space-x-2 text-gray-700 hover:text-medical-600 transition-all duration-300 font-medium group"
+                >
+                  <Globe
+                    size={18}
+                    className="text-medical-600 group-hover:text-medical-700"
+                  />
+                  <span className="text-sm">{currentLanguage}</span>
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-300 ${
+                      isLanguageDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-medical-600 to-accent-500 group-hover:w-full transition-all duration-300"></span>
+                </button>
+
+                {/* Language Dropdown */}
+                {isLanguageDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden min-w-48 z-50 animate-slideDown">
+                    {languages.map((language) => (
+                      <button
+                        key={language.code}
+                        onClick={() => handleLanguageChange(language.name)}
+                        className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-medical-50 transition-all duration-200 ${
+                          currentLanguage === language.name
+                            ? "bg-medical-50 text-medical-700 font-medium"
+                            : "text-gray-700 hover:text-medical-600"
+                        }`}
+                      >
+                        <span className="text-lg">{language.flag}</span>
+                        <span className="text-sm">{language.name}</span>
+                        {currentLanguage === language.name && (
+                          <div className="ml-auto w-2 h-2 bg-medical-500 rounded-full"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </nav>
 
             {/* CTA Button */}
