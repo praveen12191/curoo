@@ -1,11 +1,13 @@
-from fastapi import FastAPI
-from Database.connection import db
+from fastapi import FastAPI, APIRouter
+from database.connection import db
+from middleware.middleware import add_middleware
+from routes.doctors import router as doctor_router
+
 
 app = FastAPI()
-
-@app.get("/")
-async def read_root():
-    return {"message": "Connected to MongoDB Atlas"}
+base_router = APIRouter(prefix = "/curoo")
+add_middleware(app)
 
 
+base_router.include_router(doctor_router)
 
