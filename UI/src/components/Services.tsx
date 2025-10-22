@@ -112,7 +112,7 @@ const Services: React.FC = () => {
                 <div className="relative h-96 overflow-hidden">
                   {services.map((service, index) => {
                     const IconComponent =
-                      iconMap[service.icon as keyof typeof iconMap];
+                      iconMap[service.icon as keyof typeof iconMap] || Heart;
                     return (
                       <div
                         key={service._id}
@@ -186,7 +186,7 @@ const Services: React.FC = () => {
             {/* Services Grid */}
             {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 animate-fadeInUp animation-delay-1000">
           {services.map((service) => {
-            const IconComponent = iconMap[service.icon as keyof typeof iconMap];
+            const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Heart;
             return (
               <div
                 key={service.id}

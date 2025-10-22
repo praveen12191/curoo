@@ -6,8 +6,9 @@ import {
   AppointmentCreate,
   AppointmentUpdate,
 } from "../types/api";
+
 const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:8000/curoo";
+  import.meta.env.VITE_API_URL || "http://localhost:8000/curoo";
 
 // Generic API function
 async function apiCall(endpoint: string, options: RequestInit = {}) {
