@@ -139,6 +139,16 @@ const Doctors: React.FC<DoctorsProps> = ({ onBookAppointment }) => {
             </div>
           ))}
         </div>
+        {/* See All Doctors Button */}
+        <div className="text-center mt-12 animate-fadeInUp animation-delay-800">
+          <a
+            href="/all-doctors"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-medical-600 to-accent-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl hover:shadow-medical-500/50 transition-all duration-300 transform hover:scale-105"
+          >
+            <span>See All Doctors</span>
+            <Award size={24} />
+          </a>
+        </div>
 
         {/* Call to Action */}
         <div className="text-center mt-16 animate-fadeInUp animation-delay-1000">
@@ -176,16 +186,7 @@ const Doctors: React.FC<DoctorsProps> = ({ onBookAppointment }) => {
           </div>
         </div>
 
-        {/* See All Doctors Button */}
-        <div className="text-center mt-12 animate-fadeInUp animation-delay-800">
-          <a
-            href="/all-doctors"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-medical-600 to-accent-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl hover:shadow-medical-500/50 transition-all duration-300 transform hover:scale-105"
-          >
-            <span>See All Doctors</span>
-            <Award size={24} />
-          </a>
-        </div>
+        
       </div>
     </section>
   );

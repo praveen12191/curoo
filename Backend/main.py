@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
 
-from Database.connection import db
+from database.connection import db
 from routes.doctors import router as doctor_router
 from routes.services import router as services_router
 from routes.appointments import router as appointments_router

@@ -3,8 +3,8 @@ from typing import List
 from bson import ObjectId
 from datetime import datetime
 
-from Database.connection import db
-from Database.models import Doctor, DoctorCreate, DoctorUpdate
+from database.connection import db
+from database.models import Doctor, DoctorCreate, DoctorUpdate
 
 router = APIRouter(prefix="/api/doctors", tags=["doctors"])
 
